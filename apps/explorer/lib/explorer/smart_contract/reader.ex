@@ -10,6 +10,7 @@ defmodule Explorer.SmartContract.Reader do
   alias Explorer.Chain
   alias Explorer.Chain.{Hash, SmartContract}
   alias Explorer.SmartContract.Helper
+  require Logger
 
   @typedoc """
   Map of functions to call with the values for the function to be called with.
@@ -379,6 +380,7 @@ defmodule Explorer.SmartContract.Reader do
           nil
 
         _ ->
+          Logger.debug(Kernel.inspect(parsed_final_abi))
           function_object = find_function_by_method(parsed_final_abi, method_id)
 
           %ABI.FunctionSelector{returns: returns, method_id: method_id} = function_object
@@ -430,8 +432,11 @@ defmodule Explorer.SmartContract.Reader do
   defp validate_name(name), do: not is_nil(name) and String.length(name) > 0
 
   defp find_function_by_method(parsed_abi, method_id) do
+    Logger.debug("find fucntion")
+    Logger.debug(method_id)
     parsed_abi
     |> Enum.filter(fn %ABI.FunctionSelector{method_id: find_method_id} ->
+      Logger.debug(Kernel.inspect(Base.encode16(find_method_id, case: :lower)))
       if find_method_id do
         Base.encode16(find_method_id, case: :lower) == method_id || find_method_id == method_id
       else

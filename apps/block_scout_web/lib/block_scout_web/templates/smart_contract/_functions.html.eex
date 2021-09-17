@@ -96,7 +96,7 @@
             </div>
           <% end %>
 
-          <input type="submit" value='<%= if writable?(function), do: gettext("Write"), else: gettext("Query")%>' class="button btn-line button-xs py-0 mt-2 write-contract-btn" />
+          <input type="submit" value='<%= if @action == "write", do: gettext("Write"), else: gettext("Query")%>' class="button btn-line button-xs py-0 mt-2 write-contract-btn" />
         </form>
 
         <%= if outputs?(function["outputs"]) do %>
